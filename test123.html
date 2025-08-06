@@ -336,14 +336,7 @@
       });
     }
 
-    document.querySelectorAll("input[type=radio]").forEach((input) => {
-      input.addEventListener("change", (e) => {
-        const name = e.target.name;
-        const group = document.querySelectorAll(`input[name='${name}']`);
-        group.forEach((el) => el.disabled = true);
-      });
-    });
   </script>
 
 </body>
-  </html>
+                 </html>
