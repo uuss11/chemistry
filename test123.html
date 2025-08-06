@@ -310,14 +310,23 @@
 
     function calculateScore() {
       const form = document.getElementById("quizForm");
-      let total = Object.keys(answers).length;
+      const total = Object.keys(answers).length;
       let correct = 0;
+      let answered = 0;
 
       for (let key in answers) {
         const selected = form.querySelector(`input[name="${key}"]:checked`);
-        if (selected && selected.value === answers[key]) {
-          correct++;
+        if (selected) {
+          answered++;
+          if (selected.value === answers[key]) {
+            correct++;
+          }
         }
+      }
+
+      if (answered < total) {
+        alert("يرجى الإجابة على جميع الأسئلة قبل عرض النتيجة.");
+        return;
       }
 
       const score = Math.round((correct / total) * 100);
@@ -329,21 +338,10 @@
       const feedback = document.getElementById("feedback");
       const sendBtn = document.getElementById("sendBtn");
 
-      stars.addEventListener("change", () => {
-        const msg = `📚 تقييم اختبار 1-2-3\n👤 الاسم: ${name}\n🎯 الدرجة: ${score}/100\n⭐ التقييم: ${stars.value}\n📝 رأي: ${feedback.value || "بدون"}`;
-        const encoded = encodeURIComponent(msg);
-        sendBtn.href = `https://t.me/share/url?url=t.me/lJJ2l&text=${encoded}`;
-      });
+      const msg = `📚 تقييم اختبار 1-2-3\n👤 الاسم: ${name}\n🎯 الدرجة: ${score}/100\n⭐ التقييم: ${stars.value}\n📝 رأي: ${feedback.value}`;
+      const encoded = encodeURIComponent(msg);
+      sendBtn.href = `https://t.me/share/url?url=t.me/lJJ2l&text=${encoded}`;
     }
-
-    document.querySelectorAll("input[type=radio]").forEach((input) => {
-  input.addEventListener("change", (e) => {
-    const name = e.target.name;
-    const group = document.querySelectorAll(`input[name='${name}']`);
-    group.forEach((el) => el.disabled = true);
-  });
-});
   </script>
-
 </body>
-                 </html>
+</html>
