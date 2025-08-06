@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>اختبار الفصول 4 - 5 - 6</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
 
-  <!-- تحميل ملف الأسئلة أولاً -->
-  <script src="hh.js"></script>
+  <!-- تحميل ملف الأسئلة -->
+  <script src="hh.js" defer></script>
 
-  <!-- كود الاختبار -->
   <script defer>
     document.addEventListener("DOMContentLoaded", () => {
       const quizForm = document.getElementById("quizForm");
@@ -21,7 +20,6 @@
       const feedback = document.getElementById("feedback");
 
       let total = questions.length;
-      let answered = 0;
       let correct = 0;
 
       questions.forEach((q, idx) => {
@@ -40,8 +38,12 @@
             <label class="ml-4"><input type="radio" name="${name}" value="خطأ"> خطأ</label>
           `;
         } else if (q.type === "mc") {
-          const options = [...q.options, q.correct];
-          options.sort(() => Math.random() - 0.5); // Shuffle options
+          // دمج الخيارات مع الإجابة الصحيحة، ثم الخلط
+          const optionsSet = new Set(q.options);
+          optionsSet.add(q.correct); // تأكد أن الإجابة الصحيحة موجودة فقط مرة واحدة
+          const options = Array.from(optionsSet);
+          options.sort(() => Math.random() - 0.5);
+
           answersHTML = options.map(opt => `
             <label class="block">
               <input type="radio" name="${name}" value="${opt}"> ${opt}
@@ -51,20 +53,27 @@
 
         div.innerHTML = questionHTML + answersHTML;
         questionsContainer.appendChild(div);
-
-        // منع تغيير الإجابة بعد الاختيار
-        div.addEventListener("change", (e) => {
-          if (e.target.name === name) {
-            const inputs = div.querySelectorAll(`input[name='${name}']`);
-            inputs.forEach(input => input.disabled = true);
-            answered++;
-            if (e.target.value === q.correct) correct++;
-          }
-        });
       });
 
-      // عند الضغط على "عرض النتيجة"
       document.getElementById("submitBtn").onclick = () => {
+        correct = 0;
+        let answered = 0;
+
+        for (let i = 0; i < total; i++) {
+          const name = `q${i + 1}`;
+          const selected = document.querySelector(`input[name="${name}"]:checked`);
+          if (selected) {
+            answered++;
+            const q = questions[i];
+            if (selected.value === q.correct) correct++;
+          }
+        }
+
+        if (answered < total) {
+          alert("يرجى الإجابة على كل الأسئلة قبل عرض النتيجة.");
+          return;
+        }
+
         const score = Math.round((correct / total) * 100);
         scoreDisplay.textContent = score;
         resultBox.classList.remove("hidden");
@@ -72,7 +81,7 @@
         const name = localStorage.getItem("studentName") || "طالب بدون اسم";
 
         stars.addEventListener("change", () => {
-          const msg = `📚 تقييم اختبار 4-5-6\n👤 الاسم: ${name}\n🎯 الدرجة: ${score}/100\n⭐ التقييم: ${stars.value}\n📝 رأي: ${feedback.value || "بدون"}`;
+          const msg = `📚 تقييم اختبار 4-5-6\n👤 الاسم: ${name}\n🎯 الدرجة: ${score}/100\n⭐ التقييم: ${stars.value}\n📝 رأي: ${feedback.value}`;
           const encoded = encodeURIComponent(msg);
           sendBtn.href = `https://t.me/share/url?url=t.me/lJJ2l&text=${encoded}`;
         });
@@ -86,13 +95,19 @@
 
     <form id="quizForm">
       <div id="questions" class="space-y-4"></div>
-      <button id="submitBtn" type="button" class="mt-6 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
+      <button
+        id="submitBtn"
+        type="button"
+        class="mt-6 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700"
+      >
         عرض النتيجة
       </button>
     </form>
 
     <div id="result" class="hidden mt-6 space-y-4">
-      <div class="text-xl font-bold text-green-600">درجتك: <span id="score"></span>/100</div>
+      <div class="text-xl font-bold text-green-600">
+        درجتك: <span id="score"></span>/100
+      </div>
 
       <label class="block font-semibold">قيم الموقع من 1 إلى 10 نجوم:</label>
       <select id="stars" class="w-full border rounded-lg p-2">
@@ -109,9 +124,18 @@
         <option value="★★★★★★★★★★">★★★★★★★★★★</option>
       </select>
 
-      <textarea id="feedback" rows="3" placeholder="اكتب رأيك (اختياري)" class="w-full border rounded-lg p-2"></textarea>
+      <textarea
+        id="feedback"
+        rows="3"
+        placeholder="اكتب رأيك (اختياري)"
+        class="w-full border rounded-lg p-2"
+      ></textarea>
 
-      <a id="sendBtn" target="_blank" class="block w-full bg-green-600 text-white text-center py-2 rounded-lg hover:bg-green-700">
+      <a
+        id="sendBtn"
+        target="_blank"
+        class="block w-full bg-green-600 text-white text-center py-2 rounded-lg hover:bg-green-700"
+      >
         ارسال التقييم إلى التليجرام
       </a>
     </div>
