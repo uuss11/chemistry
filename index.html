@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>اختبارات الكيمياء - الثالث متوسط</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+
+  <div class="bg-white p-6 rounded-2xl shadow-xl w-full max-w-md space-y-6 text-center">
+    <h1 class="text-2xl font-bold text-blue-800">اختبارات كيمياء الثالث متوسط</h1>
+
+    <input id="studentName" type="text" placeholder="ادخل اسمك الثلاثي"
+      class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring focus:border-blue-500"/>
+
+    <div class="space-y-4">
+      <button onclick="startTest('test123.html')"
+        class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">اختبار الفصول 1 - 2 - 3</button>
+
+      <button onclick="startTest('test456.html')"
+        class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">اختبار الفصول 4 - 5 - 6</button>
+
+      <button onclick="startTest('test7.html')"
+        class="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700">اختبار الفصل 7</button>
+    </div>
+  </div>
+
+  <script>
+    function startTest(page) {
+      const name = document.getElementById('studentName').value.trim();
+      if (!name) {
+        alert("رجاءً ادخل اسمك الثلاثي.");
+        return;
+      }
+      // تخزين الاسم لاستخدامه في الصفحات الأخرى
+      localStorage.setItem("studentName", name);
+      window.location.href = page;
+    }
+  </script>
+
+</body>
+</html>
