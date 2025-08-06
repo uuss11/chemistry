@@ -54,9 +54,17 @@
         questionsContainer.appendChild(div);
 
         // منع تغيير الإجابة بعد الاختيار
-        
+        div.addEventListener("change", (e) => {  
+  if (e.target.name === name) {  
+    const inputs = div.querySelectorAll(`input[name='${name}']`);  
+    inputs.forEach(input => input.disabled = true);  
+    answered++;  
+    if (e.target.value === q.correct) correct++;  
+  }  
+})
 
-      document.getElementById("submitBtn").onclick = () => {
+
+document.getElementById("submitBtn").onclick = () => {
         const score = Math.round((correct / total) * 100);
         scoreDisplay.textContent = score;
         resultBox.classList.remove("hidden");
