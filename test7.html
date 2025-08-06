@@ -5,7 +5,8 @@
   <title>اختبار الفصل السابع</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <script src="z7.js" defer></script>
+  <script src="z7.js"></script>
+
   <script defer>
     document.addEventListener("DOMContentLoaded", () => {
       if (typeof questions === "undefined" || !Array.isArray(questions)) {
@@ -13,27 +14,23 @@
         return;
       }
 
-      const quizForm = document.getElementById("quizForm");
       const questionsContainer = document.getElementById("questions");
       const resultBox = document.getElementById("result");
       const scoreDisplay = document.getElementById("score");
       const sendBtn = document.getElementById("sendBtn");
       const stars = document.getElementById("stars");
       const feedback = document.getElementById("feedback");
-
-      let total = questions.length;
-      let answered = 0;
-      let correct = 0;
+      const warningBox = document.getElementById("warning");
 
       questions.forEach((q, idx) => {
         const div = document.createElement("div");
         div.className = "mb-4 p-4 border rounded-lg bg-gray-50";
 
         const qNum = idx + 1;
+        const name = `q${qNum}`;
         const questionHTML = `<p class="font-semibold">${qNum}. ${q.question}</p>`;
 
         let answersHTML = "";
-        const name = `q${qNum}`;
 
         if (q.type === "tf") {
           answersHTML = `
@@ -52,19 +49,34 @@
 
         div.innerHTML = questionHTML + answersHTML;
         questionsContainer.appendChild(div);
+      });
 
-        // منع تغيير الإجابة بعد الاختيار
-        div.addEventListener("change", (e) => {
-  if (e.target.name === name) {
-    const inputs = div.querySelectorAll(`input[name='${name}']`);
-    inputs.forEach(input => input.disabled = true);
-    answered++;
-    if (e.target.value === q.correct) correct++;
-  }
-});
+      // عند الضغط على زر النتيجة
+      document.getElementById("submitBtn").onclick = () => {
+        let correct = 0;
+        let unanswered = 0;
 
+        questions.forEach((q, idx) => {
+          const qNum = idx + 1;
+          const name = `q${qNum}`;
+          const selected = document.querySelector(`input[name='${name}']:checked`);
+          if (!selected) {
+            unanswered++;
+          } else if (selected.value === q.correct) {
+            correct++;
+          }
+        });
 
-document.getElementById("submitBtn").onclick = () => {
+        if (unanswered > 0) {
+          warningBox.textContent = "🔴 يرجى الإجابة على جميع الأسئلة قبل عرض النتيجة.";
+          warningBox.classList.remove("hidden");
+          resultBox.classList.add("hidden");
+          return;
+        } else {
+          warningBox.classList.add("hidden");
+        }
+
+        const total = questions.length;
         const score = Math.round((correct / total) * 100);
         scoreDisplay.textContent = score;
         resultBox.classList.remove("hidden");
@@ -83,6 +95,10 @@ document.getElementById("submitBtn").onclick = () => {
 <body class="bg-gray-100 p-4 text-right">
   <div class="max-w-3xl mx-auto bg-white p-6 rounded-xl shadow-lg">
     <h1 class="text-2xl font-bold text-center text-purple-700 mb-6">اختبار كيمياء - الفصل 7</h1>
+    
+    <!-- مربع التحذير -->
+    <div id="warning" class="hidden text-red-600 font-semibold mb-4"></div>
+
     <form id="quizForm">
       <div id="questions" class="space-y-4"></div>
       <button id="submitBtn" type="button" class="mt-6 w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700">
