@@ -17,18 +17,48 @@
     .test-card:hover {
       transform: translateY(-5px);
     }
+    .developer-info {
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899, #f59e0b, #10b981);
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: gradient 8s ease infinite;
+    }
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .title-animation {
+      animation: colorChange 10s infinite alternate;
+    }
+    @keyframes colorChange {
+      0% { color: #3b82f6; }
+      20% { color: #8b5cf6; }
+      40% { color: #ec4899; }
+      60% { color: #f59e0b; }
+      80% { color: #10b981; }
+      100% { color: #3b82f6; }
+    }
   </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4">
 
-  <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg space-y-8 border border-gray-100">
+  <div class="bg-white p-8 rounded-xl shadow-lg w-full max-w-lg space-y-6 border border-gray-100">
+    <!-- Developer Info -->
+    <div class="text-center developer-info">
+      <p class="text-lg font-bold">المطور: رضا</p>
+      <p class="text-sm">تليجرام: @lJJ2l</p>
+    </div>
+    
     <div class="text-center">
       <div class="flex justify-center mb-4">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       </div>
-      <h1 class="text-3xl font-bold text-gray-800 mb-2">اختبارات كيمياء</h1>
+      <h1 class="text-3xl font-bold text-gray-800 mb-2 title-animation">اختبارات كيمياء</h1>
       <p class="text-gray-600">الصف الثالث المتوسط - الفصل الدراسي الثاني</p>
     </div>
 
@@ -43,16 +73,16 @@
     <div class="space-y-3">
       <!-- اختبار الفصول 1 - 2 - 3 -->
       <button onclick="startTest('test123.html')"
-        class="test-card w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 flex items-center justify-center space-x-2 space-x-reverse">
+        class="test-card w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 flex items-center justify-center space-x-2 space-x-reverse transition-all duration-300">
         <span>اختبار الفصول 1 - 2 - 3</span>
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
         </svg>
       </button>
 
-      <!-- اختبار الفصول 4 - 5 - 6 (تعديل هنا!) -->
+      <!-- اختبار الفصول 4 - 5 - 6 -->
       <button onclick="startTest('ger/test456.html')"
-        class="test-card w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 flex items-center justify-center space-x-2 space-x-reverse">
+        class="test-card w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 flex items-center justify-center space-x-2 space-x-reverse transition-all duration-300">
         <span>اختبار الفصول 4 - 5 - 6</span>
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
@@ -61,7 +91,7 @@
 
       <!-- اختبار الفصل 7 -->
       <button onclick="startTest('test7.html')"
-        class="test-card w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 flex items-center justify-center space-x-2 space-x-reverse">
+        class="test-card w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 flex items-center justify-center space-x-2 space-x-reverse transition-all duration-300">
         <span>اختبار الفصول 7- 8- 9/قيد العمل</span>
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
@@ -70,7 +100,7 @@
     </div>
 
     <div class="pt-4 border-t border-gray-100 text-center text-sm text-gray-500">
-      <p>جميع الحقوق محفوظة © ثانوية  ***للبنين</p>
+      <p>جميع الحقوق محفوظة © ثانوية ***للبنين</p>
     </div>
   </div>
 
