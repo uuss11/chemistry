@@ -5,8 +5,7 @@
   <title>اختبار الفصل السابع</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <script src="z7.js"></script>
-
+  <script src="z7.js" defer></script>
   <script defer>
     document.addEventListener("DOMContentLoaded", () => {
       if (typeof questions === "undefined" || !Array.isArray(questions)) {
@@ -14,23 +13,23 @@
         return;
       }
 
+      const quizForm = document.getElementById("quizForm");
       const questionsContainer = document.getElementById("questions");
       const resultBox = document.getElementById("result");
       const scoreDisplay = document.getElementById("score");
       const sendBtn = document.getElementById("sendBtn");
       const stars = document.getElementById("stars");
       const feedback = document.getElementById("feedback");
-      const warningBox = document.getElementById("warning");
 
       questions.forEach((q, idx) => {
         const div = document.createElement("div");
         div.className = "mb-4 p-4 border rounded-lg bg-gray-50";
 
         const qNum = idx + 1;
-        const name = `q${qNum}`;
         const questionHTML = `<p class="font-semibold">${qNum}. ${q.question}</p>`;
 
         let answersHTML = "";
+        const name = `q${qNum}`;
 
         if (q.type === "tf") {
           answersHTML = `
@@ -38,8 +37,16 @@
             <label class="ml-4"><input type="radio" name="${name}" value="خطأ"> خطأ</label>
           `;
         } else if (q.type === "mc") {
-          const options = [...q.options, q.correct];
+          const options = [...q.options];
+
+          // إضافة الجواب الصحيح فقط إذا مو موجود
+          if (!options.includes(q.correct)) {
+            options.push(q.correct);
+          }
+
+          // خلط الخيارات بدون تكرار
           options.sort(() => Math.random() - 0.5);
+
           answersHTML = options.map(opt => `
             <label class="block">
               <input type="radio" name="${name}" value="${opt}"> ${opt}
@@ -51,33 +58,27 @@
         questionsContainer.appendChild(div);
       });
 
-      // عند الضغط على زر النتيجة
       document.getElementById("submitBtn").onclick = () => {
+        const formData = new FormData(quizForm);
         let correct = 0;
-        let unanswered = 0;
+        let answeredCount = 0;
 
         questions.forEach((q, idx) => {
           const qNum = idx + 1;
           const name = `q${qNum}`;
-          const selected = document.querySelector(`input[name='${name}']:checked`);
-          if (!selected) {
-            unanswered++;
-          } else if (selected.value === q.correct) {
-            correct++;
+          const answer = formData.get(name);
+          if (answer !== null) {
+            answeredCount++;
+            if (answer === q.correct) correct++;
           }
         });
 
-        if (unanswered > 0) {
-          warningBox.textContent = "🔴 يرجى الإجابة على جميع الأسئلة قبل عرض النتيجة.";
-          warningBox.classList.remove("hidden");
-          resultBox.classList.add("hidden");
+        if (answeredCount < questions.length) {
+          alert("يرجى الإجابة على جميع الأسئلة قبل عرض النتيجة.");
           return;
-        } else {
-          warningBox.classList.add("hidden");
         }
 
-        const total = questions.length;
-        const score = Math.round((correct / total) * 100);
+        const score = Math.round((correct / questions.length) * 100);
         scoreDisplay.textContent = score;
         resultBox.classList.remove("hidden");
 
@@ -95,10 +96,6 @@
 <body class="bg-gray-100 p-4 text-right">
   <div class="max-w-3xl mx-auto bg-white p-6 rounded-xl shadow-lg">
     <h1 class="text-2xl font-bold text-center text-purple-700 mb-6">اختبار كيمياء - الفصل 7</h1>
-    
-    <!-- مربع التحذير -->
-    <div id="warning" class="hidden text-red-600 font-semibold mb-4"></div>
-
     <form id="quizForm">
       <div id="questions" class="space-y-4"></div>
       <button id="submitBtn" type="button" class="mt-6 w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700">
