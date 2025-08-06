@@ -54,14 +54,14 @@
         questionsContainer.appendChild(div);
 
         // منع تغيير الإجابة بعد الاختيار
-        div.addEventListener("change", (e) => {  
-  if (e.target.name === name) {  
-    const inputs = div.querySelectorAll(`input[name='${name}']`);  
-    inputs.forEach(input => input.disabled = true);  
-    answered++;  
-    if (e.target.value === q.correct) correct++;  
-  }  
-})
+        div.addEventListener("change", (e) => {
+  if (e.target.name === name) {
+    const inputs = div.querySelectorAll(`input[name='${name}']`);
+    inputs.forEach(input => input.disabled = true);
+    answered++;
+    if (e.target.value === q.correct) correct++;
+  }
+});
 
 
 document.getElementById("submitBtn").onclick = () => {
