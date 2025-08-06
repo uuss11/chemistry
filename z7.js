@@ -1,111 +1,117 @@
-<!DOCTYPE html><html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8">
-  <title>اختبار الفصول 4 - 5 - 6</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <script src="hh.js" defer></script>
-  <script defer>
-    document.addEventListener("DOMContentLoaded", () => {
-      const quizForm = document.getElementById("quizForm");
-      const questionsContainer = document.getElementById("questions");
-      const resultBox = document.getElementById("result");
-      const scoreDisplay = document.getElementById("score");
-      const sendBtn = document.getElementById("sendBtn");
-      const stars = document.getElementById("stars");
-      const feedback = document.getElementById("feedback");let total = questions.length;
-  let answered = 0;
-  let correct = 0;
+// ملف z7.js - أسئلة فصل 7 - الكيمياء - الصف الثالث متوسط
 
-  questions.forEach((q, idx) => {
-    const div = document.createElement("div");
-    div.className = "mb-4 p-4 border rounded-lg bg-gray-50";
+const questions = [
+  // اختيار من متعدد
+  {
+    question: "ما هو الرمز الكيميائي لعنصر النتروجين؟",
+    options: ["N", "Ne", "Na", "Ni"],
+    answer: "N"
+  },
+  {
+    question: "أي من العناصر التالية ينتمي للزمرة الخامسة VA؟",
+    options: ["الفسفور", "الكالسيوم", "الألومنيوم", "الكلور"],
+    answer: "الفسفور"
+  },
+  {
+    question: "ما هي نسبة النتروجين في الغلاف الجوي تقريباً؟",
+    options: ["21%", "78%", "50%", "1%"],
+    answer: "78%"
+  },
+  {
+    question: "ما هو العدد الذري للفسفور؟",
+    options: ["15", "7", "33", "51"],
+    answer: "15"
+  },
+  {
+    question: "أي من التالي يستخدم في تحضير غاز النتروجين مختبرياً؟",
+    options: ["كلوريد الأمونيوم ونتريت الصوديوم", "كبريتات النحاس والماء", "هيدروكسيد الصوديوم وحمض الهيدروكلوريك", "كربونات الكالسيوم وحمض الأسيتيك"],
+    answer: "كلوريد الأمونيوم ونتريت الصوديوم"
+  },
 
-    const qNum = idx + 1;
-    const questionHTML = `<p class="font-semibold">${qNum}. ${q.question}</p>`;
+  // صح وخطأ
+  {
+    question: "النتروجين عنصر نشط كيميائياً في الظروف العادية. (صح أم خطأ؟)",
+    options: ["صح", "خطأ"],
+    answer: "خطأ"
+  },
+  {
+    question: "الفسفور يوجد في الطبيعة على صورتين: الفسفور الأبيض والأحمر. (صح أم خطأ؟)",
+    options: ["صح", "خطأ"],
+    answer: "صح"
+  },
+  {
+    question: "جميع عناصر الزمرة الخامسة صلبة في الظروف العادية. (صح أم خطأ؟)",
+    options: ["صح", "خطأ"],
+    answer: "خطأ"
+  },
+  {
+    question: "الأسمدة الفوسفاتية مهمة لنمو النباتات. (صح أم خطأ؟)",
+    options: ["صح", "خطأ"],
+    answer: "صح"
+  },
+  {
+    question: "غاز النتروجين عديم اللون والرائحة. (صح أم خطأ؟)",
+    options: ["صح", "خطأ"],
+    answer: "صح"
+  },
 
-    let answersHTML = "";
-    const name = `q${qNum}`;
+  // اختيار من متعدد
+  {
+    question: "ما هي الصيغة الجزيئية لغاز النتروجين؟",
+    options: ["N", "N2", "N3", "N4"],
+    answer: "N2"
+  },
+  {
+    question: "أي من العناصر التالية يعتبر شبه فلز؟",
+    options: ["الزرنيخ", "الفسفور", "النيتروجين", "البزموث"],
+    answer: "الزرنيخ"
+  },
+  {
+    question: "ما هي درجة غليان النتروجين؟",
+    options: ["-196°C", "0°C", "100°C", "500°C"],
+    answer: "-196°C"
+  },
+  {
+    question: "ما هو اسم العملية التي يتم بها فصل النتروجين عن الأكسجين صناعياً؟",
+    options: ["التقطير التجزيئي للهواء المسال", "الترشيح", "التبخير", "التكثيف"],
+    answer: "التقطير التجزيئي للهواء المسال"
+  },
+  {
+    question: "أي من المركبات التالية هو سماد نيتروجيني؟",
+    options: ["نترات الأمونيوم", "كبريتات الكالسيوم", "كلوريد الصوديوم", "كربونات الكالسيوم"],
+    answer: "نترات الأمونيوم"
+  },
 
-    if (q.type === "tf") {
-      answersHTML = `
-        <label><input type="radio" name="${name}" value="صح"> صح</label>
-        <label class="ml-4"><input type="radio" name="${name}" value="خطأ"> خطأ</label>
-      `;
-    } else if (q.type === "mc") {
-      const options = [...q.options, q.correct];
-      options.sort(() => Math.random() - 0.5); // Shuffle options
-      answersHTML = options.map(opt => `
-        <label class="block">
-          <input type="radio" name="${name}" value="${opt}"> ${opt}
-        </label>
-      `).join("");
-    }
+  // صح وخطأ
+  {
+    question: "يستخدم النتروجين في صناعة الأسمدة والمتفجرات. (صح أم خطأ؟)",
+    options: ["صح", "خطأ"],
+    answer: "صح"
+  },
+  {
+    question: "الفسفور الأبيض أكثر تفاعلاً من الفسفور الأحمر. (صح أم خطأ؟)",
+    options: ["صح", "خطأ"],
+    answer: "صح"
+  },
+  {
+    question: "البزموث هو أكثر عناصر الزمرة الخامسة فلزية. (صح أم خطأ؟)",
+    options: ["صح", "خطأ"],
+    answer: "صح"
+  },
+  {
+    question: "النتروجين يشكل حوالي 50% من حجم الغلاف الجوي. (صح أم خطأ؟)",
+    options: ["صح", "خطأ"],
+    answer: "خطأ"
+  },
+  {
+    question: "الفسفور عنصر أساسي في تركيب العظام والأسنان. (صح أم خطأ？)",
+    options: ["صح", "خطأ"],
+    answer: "صح"
+  }
+];
 
-    div.innerHTML = questionHTML + answersHTML;
-    questionsContainer.appendChild(div);
+// تصدير الأسئلة إذا تستخدم نظام موديلات ES6
+// export default questions;
 
-    // منع التغيير بعد الاختيار
-    div.addEventListener("change", (e) => {
-      if (e.target.name === name) {
-        const inputs = div.querySelectorAll(`input[name='${name}']`);
-        inputs.forEach(input => input.disabled = true);
-        answered++;
-        if (e.target.value === q.correct) correct++;
-      }
-    });
-  });
-
-  document.getElementById("submitBtn").onclick = () => {
-    const score = Math.round((correct / total) * 100);
-    scoreDisplay.textContent = score;
-    resultBox.classList.remove("hidden");
-
-    const name = localStorage.getItem("studentName") || "طالب بدون اسم";
-
-    stars.addEventListener("change", () => {
-      const msg = `📚 تقييم اختبار 4-5-6\n👤 الاسم: ${name}\n🎯 الدرجة: ${score}/100\n⭐ التقييم: ${stars.value}\n📝 رأي: ${feedback.value || "بدون"}`;
-      const encoded = encodeURIComponent(msg);
-      sendBtn.href = `https://t.me/share/url?url=t.me/lJJ2l&text=${encoded}`;
-    });
-  };
-});
-
-  </script>
-</head>
-<body class="bg-gray-100 p-4 text-right">
-  <div class="max-w-3xl mx-auto bg-white p-6 rounded-xl shadow-lg">
-    <h1 class="text-2xl font-bold text-center text-blue-700 mb-6">اختبار كيمياء - الفصول 4، 5، 6</h1>
-    <form id="quizForm">
-      <div id="questions" class="space-y-4"></div>
-      <button id="submitBtn" type="button" class="mt-6 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
-        عرض النتيجة
-      </button>
-    </form><div id="result" class="hidden mt-6 space-y-4">
-  <div class="text-xl font-bold text-green-600">درجتك: <span id="score"></span>/100</div>
-
-  <label class="block font-semibold">قيم الموقع من 1 إلى 10 نجوم:</label>
-  <select id="stars" class="w-full border rounded-lg p-2">
-    <option value="">-- اختر عدد النجوم --</option>
-    <option value="★">★</option>
-    <option value="★★">★★</option>
-    <option value="★★★">★★★</option>
-    <option value="★★★★">★★★★</option>
-    <option value="★★★★★">★★★★★</option>
-    <option value="★★★★★★">★★★★★★</option>
-    <option value="★★★★★★★">★★★★★★★</option>
-    <option value="★★★★★★★★">★★★★★★★★</option>
-    <option value="★★★★★★★★★">★★★★★★★★★</option>
-    <option value="★★★★★★★★★★">★★★★★★★★★★</option>
-  </select>
-
-  <textarea id="feedback" rows="3" placeholder="اكتب رأيك (اختياري)" class="w-full border rounded-lg p-2"></textarea>
-
-  <a id="sendBtn" target="_blank" class="block w-full bg-green-600 text-white text-center py-2 rounded-lg hover:bg-green-700">
-    ارسال التقييم إلى التليجرام
-  </a>
-</div>
-
-  </div>
-</body>
-</html>
+// أو لو تستخدمها مباشرة داخل ملف html
+// يمكن استدعاؤها كـ variable
